@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BloggerPost, ViewState } from '../types';
+import { PoemContent } from './PoemContent';
 
 interface ReaderProps {
   postIndex: number;
@@ -187,9 +188,11 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
                 {post.title}
               </h1>
 
-              <div
+              <PoemContent
+                content={post.content}
+                tags={post.tags}
+                onTagClick={(tag) => onNavigate({ type: 'results', tag })}
                 className="poem-content font-serif text-xl md:text-2xl leading-relaxed md:leading-loose mb-16"
-                dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
               {post.tags.length > 0 && (
