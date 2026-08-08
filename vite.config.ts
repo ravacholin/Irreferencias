@@ -28,8 +28,8 @@ export default defineConfig(() => {
           scope: '/',
           display: 'standalone',
           orientation: 'portrait',
-          background_color: '#000000',
-          theme_color: '#000000',
+          background_color: '#0b0b0a',
+          theme_color: '#0b0b0a',
           categories: ['books', 'education', 'lifestyle'],
           icons: [
             {

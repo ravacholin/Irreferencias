@@ -69,30 +69,30 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-100 text-black">
-      <header className="border-b-[4px] border-black bg-black text-white shrink-0">
-        <div className="p-6 md:p-8 flex flex-col gap-4">
+    <div className="flex flex-col h-full bg-ink text-bone">
+      <header className="border-b border-rule shrink-0">
+        <div className="px-6 py-6 md:px-12 md:py-8 flex flex-col gap-5">
           <div className="flex items-center justify-between gap-4">
             <button
               onClick={() => onNavigate({ type: 'home' })}
-              className="text-xs font-mono uppercase font-bold tracking-widest opacity-70 hover:opacity-100 flex items-center gap-1"
+              className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim hover:text-bone transition-colors"
             >
               &larr; Inicio
             </button>
-            <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest bg-white text-black px-3 py-1 font-bold">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim">
               {filteredPosts.length} {filteredPosts.length === 1 ? 'poema' : 'poemas'}
             </span>
           </div>
 
           <input
             type="text"
-            placeholder="BUSCAR EN TÍTULO Y TEXTO..."
+            placeholder="Buscar en título y texto…"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
               if (scrollRef.current) scrollRef.current.scrollTo(0, 0);
             }}
-            className="w-full border-[4px] border-white bg-black text-white p-3 md:p-4 font-bold uppercase tracking-widest outline-none focus:bg-white focus:text-black transition-colors placeholder:text-white/40"
+            className="w-full border border-hairline bg-ink-2 px-4 py-3 text-sm text-bone placeholder:text-bone-faint outline-none focus:border-bone transition-colors"
           />
 
           {selectedTags.length > 0 && (
@@ -101,7 +101,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
                 <button
                   key={t}
                   onClick={() => toggleTag(t)}
-                  className="group border-[2px] border-white bg-white text-black px-3 py-1 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors flex items-center gap-2"
+                  className="group flex items-center gap-2 bg-bone text-ink px-3 py-1 font-mono text-xs tracking-wide hover:bg-transparent hover:text-bone border border-bone transition-colors"
                   title="Quitar filtro"
                 >
                   #{t}
@@ -110,7 +110,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
               ))}
               <button
                 onClick={() => onNavigate({ type: 'tags' })}
-                className="border-[2px] border-dashed border-white px-3 py-1 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
+                className="border border-dashed border-bone-faint px-3 py-1 font-mono text-xs tracking-wide text-bone-dim hover:text-bone hover:border-bone transition-colors"
               >
                 Todas las etiquetas
               </button>
@@ -122,25 +122,25 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         {filteredPosts.length === 0 ? (
           <div className="h-full flex items-center justify-center p-8">
-            <p className="text-center opacity-50 font-bold uppercase tracking-widest">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
               No se encontraron poemas
             </p>
           </div>
         ) : (
-          <div className="flex flex-col">
+          <div className="divide-y divide-hairline">
             {filteredPosts.map((post, index) => (
               <article
                 key={post.id}
-                className="poem-card border-b-[6px] border-black bg-white px-6 py-10 md:px-16 md:py-16 flex flex-col items-center"
+                className="poem-card drift-in px-6 py-12 md:px-16 md:py-20 flex flex-col items-center"
               >
-                <div className="w-full max-w-2xl">
+                <div className="w-full max-w-[38rem]">
                   <div className="flex items-baseline justify-between gap-4 mb-6">
-                    <span className="font-mono text-[10px] md:text-xs opacity-40 uppercase tracking-widest">
+                    <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint">
                       {formatDate(post.published)}
                     </span>
                     <button
                       onClick={() => openReader(index)}
-                      className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest border-b-2 border-black hover:bg-black hover:text-white px-1 transition-colors shrink-0"
+                      className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hover:text-bone transition-colors shrink-0"
                       title="Abrir en el lector"
                     >
                       Leer &rarr;
@@ -149,26 +149,26 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
 
                   <h2
                     onClick={() => openReader(index)}
-                    className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-8 leading-[0.9] cursor-pointer hover:opacity-60 transition-opacity"
+                    className="font-serif text-3xl md:text-4xl italic tracking-tight mb-8 leading-tight cursor-pointer text-bone hover:text-bone-dim transition-colors"
                   >
                     {post.title}
                   </h2>
 
                   <div
-                    className="poem-content font-serif text-lg md:text-2xl leading-relaxed md:leading-loose tracking-wide"
+                    className="poem-content font-serif text-lg md:text-xl leading-relaxed md:leading-loose"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                   />
 
                   {post.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mt-10 pt-6 border-t-[3px] border-black">
+                    <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-hairline">
                       {post.tags.map((t) => (
                         <button
                           key={t}
                           onClick={() => toggleTag(t)}
-                          className={`font-mono text-xs md:text-sm font-bold border-b-2 pb-0.5 px-1 uppercase transition-colors ${
+                          className={`font-mono text-xs tracking-wide px-2 py-1 border transition-colors ${
                             selectedTags.includes(t)
-                              ? 'bg-black text-white border-black'
-                              : 'border-black hover:bg-black hover:text-white'
+                              ? 'bg-bone text-ink border-bone'
+                              : 'text-bone-dim border-hairline hover:text-bone hover:border-bone-dim'
                           }`}
                         >
                           #{t}

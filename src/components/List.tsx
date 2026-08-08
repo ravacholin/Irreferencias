@@ -19,7 +19,7 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
   }, [posts]);
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
+    setSelectedTags(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     );
   };
@@ -41,43 +41,45 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
   }, [posts, searchTerm, selectedTags, sortOrder]);
 
   return (
-    <div className="flex flex-col h-full bg-gray-100 text-black">
-      <header className="border-b-[4px] border-black p-6 md:p-8 flex flex-col bg-black text-white shrink-0">
-        <button 
+    <div className="flex flex-col h-full bg-ink text-bone">
+      <header className="border-b border-rule px-6 py-8 md:px-12 md:py-10 shrink-0">
+        <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="self-start mb-6 text-xs font-mono uppercase font-bold tracking-widest opacity-70 hover:opacity-100 flex items-center gap-1"
+          className="mb-8 font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim hover:text-bone transition-colors"
         >
-          &larr; Volver al inicio
+          &larr; Inicio
         </button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+          <h2 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[0.9]">
             Índice
           </h2>
-          <span className="font-mono text-sm uppercase tracking-widest bg-white text-black px-3 py-1 font-bold self-start md:self-auto">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim self-start md:self-auto">
             {filteredPosts.length} resultados
           </span>
         </div>
       </header>
 
-      <div className="border-b-[4px] border-black bg-white p-6 md:p-8 flex flex-col gap-6 shrink-0">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="border-b border-rule px-6 py-6 md:px-12 flex flex-col gap-6 shrink-0">
+        <div className="flex flex-col md:flex-row gap-3">
           <input
             type="text"
-            placeholder="BUSCAR POR TÍTULO..."
+            placeholder="Buscar por título…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 border-[4px] border-black p-4 font-bold uppercase tracking-widest outline-none focus:bg-black focus:text-white transition-colors"
+            className="flex-1 border border-hairline bg-ink-2 px-4 py-3 text-sm text-bone placeholder:text-bone-faint outline-none focus:border-bone transition-colors"
           />
           <button
             onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
-            className="border-[4px] border-black p-4 font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors font-mono"
+            className="border border-hairline bg-ink-2 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-bone-dim hover:text-bone hover:border-bone transition-colors whitespace-nowrap"
           >
-            FECHA: {sortOrder === 'desc' ? 'MÁS RECIENTES' : 'MÁS ANTIGUOS'}
+            Fecha · {sortOrder === 'desc' ? 'Más recientes' : 'Más antiguos'}
           </button>
         </div>
-        
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[10px] uppercase font-bold tracking-widest opacity-50">Filtrar por etiquetas:</span>
+
+        <div className="flex flex-col gap-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
+            Filtrar por etiquetas
+          </span>
           <div className="flex flex-wrap gap-2">
             {allTags.map(t => {
               const isSelected = selectedTags.includes(t);
@@ -85,8 +87,10 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
                 <button
                   key={t}
                   onClick={() => toggleTag(t)}
-                  className={`border-[2px] border-black px-3 py-1 text-xs font-bold uppercase tracking-widest transition-colors ${
-                    isSelected ? 'bg-black text-white' : 'bg-transparent text-black hover:bg-gray-200'
+                  className={`px-3 py-1 text-xs font-mono tracking-wide transition-colors border ${
+                    isSelected
+                      ? 'bg-bone text-ink border-bone'
+                      : 'bg-transparent text-bone-dim border-hairline hover:text-bone hover:border-bone-dim'
                   }`}
                 >
                   #{t}
@@ -96,9 +100,9 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
             {selectedTags.length > 0 && (
               <button
                 onClick={() => setSelectedTags([])}
-                className="border-[2px] border-dashed border-black px-3 py-1 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+                className="px-3 py-1 text-xs font-mono tracking-wide border border-dashed border-bone-faint text-bone-dim hover:text-bone hover:border-bone transition-colors"
               >
-                LIMPIAR FILTROS
+                Limpiar
               </button>
             )}
           </div>
@@ -106,31 +110,34 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <ul className="flex flex-col gap-0">
+        <ul className="divide-y divide-hairline">
           {filteredPosts.map((post, index) => {
             const date = new Date(post.published);
             const dateStr = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
             return (
-              <li key={post.id} className="border-b-[2px] md:border-b-[4px] border-black last:border-b-0 bg-white hover:bg-black hover:text-white transition-colors duration-150 group">
-                <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <li
+                key={post.id}
+                className="group hover:bg-ink-2 transition-colors duration-200"
+              >
+                <div className="px-6 py-6 md:px-12 md:py-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <button
                     onClick={() => onNavigate({ type: 'reader', postIndex: index, posts: filteredPosts })}
-                    className="text-left flex flex-col pr-4 flex-1 min-w-0"
+                    className="text-left flex flex-col gap-2 pr-4 flex-1 min-w-0"
                   >
-                    <span className="font-mono text-[10px] md:text-xs mb-2 opacity-50 group-hover:opacity-100 tracking-widest">
+                    <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint group-hover:text-bone-dim transition-colors">
                       {dateStr}
                     </span>
-                    <span className="text-2xl md:text-4xl font-bold tracking-tight uppercase leading-tight">
+                    <span className="text-2xl md:text-3xl font-medium tracking-tight leading-tight text-bone">
                       {post.title}
                     </span>
                   </button>
                   {post.tags.length > 0 && (
-                    <div className="hidden md:flex gap-2 shrink-0 opacity-60 group-hover:opacity-100">
+                    <div className="hidden md:flex gap-2 shrink-0">
                       {post.tags.slice(0, 3).map(t => (
                         <button
                           key={t}
                           onClick={() => onNavigate({ type: 'results', tag: t })}
-                          className="border border-current px-2 py-1 text-[10px] font-bold uppercase hover:bg-white hover:text-black transition-colors"
+                          className="border border-hairline px-2 py-1 font-mono text-[10px] text-bone-dim hover:text-ink hover:bg-bone hover:border-bone transition-colors"
                           title={`Ver poemas de #${t}`}
                         >
                           #{t}

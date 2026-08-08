@@ -1,6 +1,63 @@
 @import "tailwindcss";
 
-/* Force text styles on Blogger HTML to make it brutalist and consistent */
+/* ------------------------------------------------------------------ */
+/*  Design tokens — monochrome warm-dark ("bone on ink").             */
+/*  Brutalism kept in the structure; warmth + calm from the palette.  */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0b0b0a;        /* page background            */
+  --color-ink-2: #121210;      /* raised surfaces / cards    */
+  --color-ink-3: #1a1a17;      /* hover wells                */
+  --color-bone: #ece9e0;       /* primary text               */
+  --color-bone-dim: #9a968c;   /* secondary / mono meta      */
+  --color-bone-faint: #6b6860; /* tertiary / disabled        */
+  --color-hairline: rgba(236, 233, 224, 0.12); /* default divider   */
+  --color-rule: rgba(236, 233, 224, 0.24);     /* structural seams  */
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+    Palatino, "Georgia", ui-serif, serif;
+  --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", "Menlo",
+    "Roboto Mono", monospace;
+}
+
+html,
+body {
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+/* Thin, quiet scrollbars that live in the dark shell. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-bone-faint) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(236, 233, 224, 0.14);
+  border-radius: 0;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(236, 233, 224, 0.26);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Poem body — force Blogger HTML into a calm serif reading rhythm.  */
+/* ------------------------------------------------------------------ */
+.poem-content {
+  color: var(--color-bone);
+}
 .poem-content * {
   font-family: inherit !important;
   font-size: inherit !important;
@@ -16,25 +73,71 @@
 
 .poem-content a {
   text-decoration: underline;
-  text-decoration-thickness: 3px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-bone-dim);
+  transition: text-decoration-color 0.2s ease;
+}
+.poem-content a:hover {
+  text-decoration-color: var(--color-bone);
 }
 
 .poem-content img {
   max-width: 100%;
   height: auto;
-  border: 4px solid black;
+  border: 1px solid var(--color-rule);
   margin: 2em 0;
+  filter: grayscale(0.15) brightness(0.92);
 }
 
-/* Feed continuo de poemas: cada tarjeta rinde de forma perezosa
-   para mantener el scroll fluido aunque haya muchos poemas. */
+/* Feed de poemas: cada tarjeta rinde de forma perezosa para mantener
+   el scroll fluido aunque haya muchos poemas. */
 .poem-card {
   content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
+  contain-intrinsic-size: auto 640px;
 }
 
 /* El lector permite arrastrar horizontalmente (swipe) para cambiar
    de poema sin activar la selección de texto del navegador. */
 .reader-swipe {
   touch-action: pan-y;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Drift — poems settle into view instead of snapping.              */
+/* ------------------------------------------------------------------ */
+@keyframes drift-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.drift-in {
+  animation: drift-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Chrome that recedes while reading and returns on interaction. */
+.chrome {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.chrome-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-in {
+    animation: none;
+  }
+  .chrome {
+    transition: none;
+  }
 }
