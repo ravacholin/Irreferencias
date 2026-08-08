@@ -18,28 +18,30 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center p-8">
-        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-widest animate-pulse">
-          Cargando...
-        </h1>
+      <div className="min-h-screen bg-ink text-bone flex items-center justify-center p-8">
+        <span className="font-mono text-xs uppercase tracking-[0.35em] text-bone-dim animate-pulse">
+          Cargando el archivo
+        </span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-red-600 text-white flex items-center justify-center p-8">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-black uppercase mb-4">Error</h1>
-          <p className="text-2xl font-bold font-mono">{error}</p>
+      <div className="min-h-screen bg-ink text-bone flex items-center justify-center p-8">
+        <div className="max-w-md text-center border border-rule p-10">
+          <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-bone-dim">
+            Error
+          </span>
+          <p className="mt-4 font-mono text-base text-bone">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="font-sans antialiased selection:bg-black selection:text-white h-screen p-0 md:p-6 bg-gray-200">
-      <div className="border-0 md:border-[16px] border-black bg-white h-full flex flex-col overflow-hidden md:shadow-2xl">
+    <div className="font-sans antialiased h-screen p-0 md:p-6 bg-ink">
+      <div className="border-0 md:border border-rule bg-ink h-full flex flex-col overflow-hidden">
         {view.type === 'home' && (
           <Home onNavigate={setView} posts={posts} />
         )}

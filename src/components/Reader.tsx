@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BloggerPost, ViewState } from '../types';
 
@@ -13,9 +13,21 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
   const post = posts[postIndex];
   const scrollRef = useRef<HTMLElement>(null);
   const directionRef = useRef(1);
+  const lastScrollTop = useRef(0);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Chrome (la barra superior) se retrae mientras se lee y reaparece
+  // ante cualquier interacción: movimiento, toque o scroll hacia arriba.
+  const [chromeHidden, setChromeHidden] = useState(false);
 
   const canPrev = postIndex > 0;
   const canNext = postIndex < posts.length - 1;
+
+  const poke = useCallback(() => {
+    setChromeHidden(false);
+    if (idleTimer.current) clearTimeout(idleTimer.current);
+    idleTimer.current = setTimeout(() => setChromeHidden(true), 2800);
+  }, []);
 
   const go = (nextIndex: number) => {
     directionRef.current = nextIndex > postIndex ? 1 : -1;
@@ -44,13 +56,39 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
     if (scrollRef.current) {
       scrollRef.current.scrollTo(0, 0);
     }
-  }, [postIndex]);
+    lastScrollTop.current = 0;
+    poke();
+  }, [postIndex, poke]);
+
+  useEffect(() => {
+    return () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+    };
+  }, []);
+
+  // El scroll hacia abajo esconde la barra; hacia arriba (o cerca del
+  // inicio) la revela.
+  const onScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const top = el.scrollTop;
+    if (top <= 4) {
+      poke();
+    } else if (top > lastScrollTop.current + 6) {
+      setChromeHidden(true);
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+    } else if (top < lastScrollTop.current - 6) {
+      poke();
+    }
+    lastScrollTop.current = top;
+  };
 
   // Navegación con el teclado (← / →).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+      poke();
       if (e.key === 'ArrowLeft' && canPrev) {
         e.preventDefault();
         go(postIndex - 1);
@@ -69,19 +107,27 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
   const dir = directionRef.current;
 
   return (
-    <div className="flex flex-col h-full bg-white text-black relative">
-      <header className="border-b-[4px] border-black flex justify-between bg-black text-white shrink-0">
+    <div
+      className="flex flex-col h-full bg-ink text-bone relative"
+      onMouseMove={poke}
+      onTouchStart={poke}
+    >
+      <header
+        className={`chrome absolute top-0 inset-x-0 z-20 border-b border-rule flex justify-between bg-ink/90 backdrop-blur-sm ${
+          chromeHidden ? 'chrome-hidden' : ''
+        }`}
+      >
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="p-4 md:p-6 border-r-[4px] border-black hover:bg-white hover:text-black transition-colors font-mono font-bold uppercase tracking-widest text-xs flex items-center"
+          className="px-4 py-4 md:px-6 border-r border-hairline hover:bg-bone hover:text-ink transition-colors font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hover:text-ink flex items-center"
         >
           &larr; Inicio
         </button>
 
         <div className="flex-1 flex items-center justify-center px-2 text-center min-w-0">
-          <span className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest truncate">
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim truncate">
             {postIndex + 1} / {posts.length}
-            {contextLabel ? <span className="opacity-50"> · {contextLabel}</span> : null}
+            {contextLabel ? <span className="text-bone-faint"> · {contextLabel}</span> : null}
           </span>
         </div>
 
@@ -89,35 +135,35 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
           <button
             onClick={handlePrev}
             disabled={!canPrev}
-            className="p-4 md:p-6 border-l-[4px] border-black hover:bg-white hover:text-black transition-colors disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white font-mono font-bold uppercase text-xs md:text-base"
+            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-bone-dim font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim"
           >
             &larr; Ant
           </button>
           <button
             onClick={handleRandom}
-            className="p-4 md:p-6 border-l-[4px] border-black hover:bg-white hover:text-black transition-colors font-mono font-bold uppercase hidden md:block"
+            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hidden md:block"
           >
-            Random
+            Azar
           </button>
           <button
             onClick={handleNext}
             disabled={!canNext}
-            className="p-4 md:p-6 border-l-[4px] border-black hover:bg-white hover:text-black transition-colors disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white font-mono font-bold uppercase text-xs md:text-base"
+            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-bone-dim font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim"
           >
             Sig &rarr;
           </button>
         </div>
       </header>
 
-      <main ref={scrollRef} className="flex-1 overflow-y-auto relative">
+      <main ref={scrollRef} onScroll={onScroll} className="flex-1 overflow-y-auto relative">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={postIndex}
             custom={dir}
-            initial={{ opacity: 0, x: dir * 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: dir * -40 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
+            initial={{ opacity: 0, x: dir * 40, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, x: dir * -40, filter: 'blur(4px)' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
@@ -130,29 +176,29 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
                 handlePrev();
               }
             }}
-            className="reader-swipe p-8 md:p-16 lg:p-24 flex flex-col items-center min-h-full"
+            className="reader-swipe px-6 pt-28 pb-24 md:px-16 md:pt-32 md:pb-32 lg:px-24 flex flex-col items-center min-h-full"
           >
-            <div className="absolute top-6 left-6 font-mono text-[10px] md:text-xs opacity-30 uppercase tracking-widest hidden md:block pointer-events-none">
-              ID #{post.id.slice(-6)} // ARCHIVO
+            <div className="absolute top-24 left-6 font-mono text-[10px] tracking-[0.25em] text-bone-faint/60 uppercase hidden md:block pointer-events-none">
+              ID #{post.id.slice(-6)} · archivo
             </div>
 
-            <article className="w-full max-w-2xl mt-8">
-              <h1 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-12 leading-[0.85]">
+            <article className="w-full max-w-[38rem]">
+              <h1 className="font-serif text-4xl md:text-6xl italic tracking-tight mb-12 leading-[1.05] text-bone">
                 {post.title}
               </h1>
 
               <div
-                className="poem-content font-serif text-xl md:text-2xl leading-relaxed md:leading-loose tracking-wide mb-16"
+                className="poem-content font-serif text-xl md:text-2xl leading-relaxed md:leading-loose mb-16"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
               {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-4 pt-12 border-t-[4px] border-black">
+                <div className="flex flex-wrap gap-2 pt-10 border-t border-hairline">
                   {post.tags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => onNavigate({ type: 'results', tag })}
-                      className="font-mono text-sm font-bold border-b-2 border-black pb-1 hover:bg-black hover:text-white transition-colors uppercase px-1"
+                      className="font-mono text-xs tracking-wide px-2 py-1 border border-hairline text-bone-dim hover:bg-bone hover:text-ink hover:border-bone transition-colors"
                     >
                       #{tag}
                     </button>

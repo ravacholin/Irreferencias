@@ -6,51 +6,84 @@ interface HomeProps {
   posts: BloggerPost[];
 }
 
+interface EntryProps {
+  index: string;
+  kicker: string;
+  title: React.ReactNode;
+  onClick: () => void;
+}
+
+function Entry({ index, kicker, title, onClick }: EntryProps) {
+  return (
+    <button
+      onClick={onClick}
+      className="group relative flex flex-col justify-between gap-16 p-8 md:p-12 text-left bg-ink hover:bg-bone hover:text-ink transition-colors duration-300 min-h-[240px] md:min-h-[300px]"
+    >
+      <div className="flex items-baseline justify-between">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim group-hover:text-ink/60 transition-colors">
+          {kicker}
+        </span>
+        <span className="font-mono text-[10px] text-bone-faint group-hover:text-ink/40 transition-colors">
+          {index}
+        </span>
+      </div>
+      <span className="text-4xl md:text-5xl font-semibold tracking-tight leading-[0.95]">
+        {title}
+      </span>
+    </button>
+  );
+}
+
 export function Home({ onNavigate, posts }: HomeProps) {
   return (
-    <div className="flex flex-col h-full bg-white text-black">
-      <header className="border-b-[4px] border-black p-8 flex flex-col md:flex-row md:justify-between md:items-end bg-black text-white shrink-0">
-        <div className="flex flex-col">
-          <span className="text-xs font-mono tracking-widest opacity-70 uppercase mb-2">Archivo de Poesía — {posts.length} Poemas</span>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none">IRREFERENCIAS</h1>
-        </div>
+    <div className="flex flex-col h-full bg-ink text-bone">
+      <header className="border-b border-rule px-8 py-12 md:px-12 md:py-16 shrink-0">
+        <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] text-bone-dim">
+          Archivo de poesía · {posts.length} poemas
+        </span>
+        <h1 className="mt-5 text-6xl md:text-8xl lg:text-9xl font-semibold tracking-tight leading-[0.85]">
+          Irreferencias
+        </h1>
       </header>
 
-      <main className="flex-1 grid grid-cols-1 md:grid-cols-3 bg-gray-100 overflow-y-auto">
-        <div className="col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-0 h-full">
-          <button
+      <main className="flex-1 overflow-y-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-hairline">
+          <Entry
+            index="01"
+            kicker="Índice completo"
+            title={<>Todos<br />los poemas</>}
             onClick={() => onNavigate({ type: 'list' })}
-            className="group relative flex flex-col justify-between p-8 md:p-12 border-b-[4px] md:border-b-0 md:border-r-[4px] border-black bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[250px]"
-          >
-            <span className="text-xs font-mono uppercase font-bold tracking-widest opacity-50 group-hover:opacity-100 mb-8">Índice Completo</span>
-            <span className="text-4xl md:text-6xl font-black uppercase tracking-tight text-left leading-none">Todos<br/>los<br/>poemas</span>
-          </button>
-          
-          <button
+          />
+          <Entry
+            index="02"
+            kicker="Descubrir"
+            title={<span className="italic font-serif font-normal">Al azar</span>}
             onClick={() => {
               if (posts.length > 0) {
-                onNavigate({ type: 'reader', postIndex: Math.floor(Math.random() * posts.length), posts });
+                onNavigate({
+                  type: 'reader',
+                  postIndex: Math.floor(Math.random() * posts.length),
+                  posts,
+                });
               }
             }}
-            className="group relative flex flex-col justify-between p-8 md:p-12 border-b-[4px] md:border-b-0 md:border-r-[4px] border-black bg-gray-50 hover:bg-black hover:text-white transition-colors duration-200 min-h-[250px]"
-          >
-            <span className="text-xs font-mono uppercase font-bold tracking-widest opacity-50 group-hover:opacity-100 mb-8">Descubrir</span>
-            <span className="text-4xl md:text-6xl font-black uppercase tracking-tight text-left leading-none italic">Aleatorio</span>
-          </button>
-
-          <button
+          />
+          <Entry
+            index="03"
+            kicker="Explorar por tema"
+            title={<>Etiquetas<br />&amp; hashtags</>}
             onClick={() => onNavigate({ type: 'tags' })}
-            className="group relative flex flex-col justify-between p-8 md:p-12 bg-white hover:bg-black hover:text-white transition-colors duration-200 min-h-[250px]"
-          >
-            <span className="text-xs font-mono uppercase font-bold tracking-widest opacity-50 group-hover:opacity-100 mb-8">Explorar por tema</span>
-            <span className="text-4xl md:text-6xl font-black uppercase tracking-tight text-left leading-none">Etiquetas<br/>&amp;<br/>Hashtags</span>
-          </button>
+          />
         </div>
       </main>
-      
-      <footer className="border-t-[4px] border-black bg-white text-black p-4 flex justify-between items-center shrink-0">
-        <span className="text-xs font-mono uppercase font-bold tracking-widest">V 1.0</span>
-        <span className="text-sm font-bold uppercase tracking-widest bg-black text-white px-4 py-1">Para mi hijo.</span>
+
+      <footer className="border-t border-rule px-8 py-5 md:px-12 flex items-center justify-between shrink-0">
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
+          V 1.0
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim">
+          Para mi hijo.
+        </span>
       </footer>
     </div>
   );
