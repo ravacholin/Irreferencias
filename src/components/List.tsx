@@ -111,29 +111,34 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
             const date = new Date(post.published);
             const dateStr = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
             return (
-              <li key={post.id} className="border-b-[2px] md:border-b-[4px] border-black last:border-b-0">
-                <button
-                  onClick={() => onNavigate({ type: 'reader', postIndex: index, posts: filteredPosts })}
-                  className="w-full text-left p-6 md:p-8 bg-white hover:bg-black hover:text-white transition-colors duration-150 flex flex-col md:flex-row md:items-center justify-between group"
-                >
-                  <div className="flex flex-col pr-4">
+              <li key={post.id} className="border-b-[2px] md:border-b-[4px] border-black last:border-b-0 bg-white hover:bg-black hover:text-white transition-colors duration-150 group">
+                <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <button
+                    onClick={() => onNavigate({ type: 'reader', postIndex: index, posts: filteredPosts })}
+                    className="text-left flex flex-col pr-4 flex-1 min-w-0"
+                  >
                     <span className="font-mono text-[10px] md:text-xs mb-2 opacity-50 group-hover:opacity-100 tracking-widest">
                       {dateStr}
                     </span>
                     <span className="text-2xl md:text-4xl font-bold tracking-tight uppercase leading-tight">
                       {post.title}
                     </span>
-                  </div>
+                  </button>
                   {post.tags.length > 0 && (
-                    <div className="hidden md:flex gap-2 mt-4 md:mt-0 opacity-50 group-hover:opacity-100">
+                    <div className="hidden md:flex gap-2 shrink-0 opacity-60 group-hover:opacity-100">
                       {post.tags.slice(0, 3).map(t => (
-                        <span key={t} className="border border-current px-2 py-1 text-[10px] font-bold uppercase">
-                          {t}
-                        </span>
+                        <button
+                          key={t}
+                          onClick={() => onNavigate({ type: 'results', tag: t })}
+                          className="border border-current px-2 py-1 text-[10px] font-bold uppercase hover:bg-white hover:text-black transition-colors"
+                          title={`Ver poemas de #${t}`}
+                        >
+                          #{t}
+                        </button>
                       ))}
                     </div>
                   )}
-                </button>
+                </div>
               </li>
             );
           })}

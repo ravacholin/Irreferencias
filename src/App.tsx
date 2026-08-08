@@ -10,6 +10,7 @@ import { Home } from './components/Home';
 import { List } from './components/List';
 import { Reader } from './components/Reader';
 import { Tags } from './components/Tags';
+import { Results } from './components/Results';
 
 export default function App() {
   const { posts, loading, error } = usePosts();
@@ -45,11 +46,19 @@ export default function App() {
         {view.type === 'list' && (
           <List posts={posts} tag={view.tag} onNavigate={setView} />
         )}
+        {view.type === 'results' && (
+          <Results posts={posts} tag={view.tag} query={view.query} onNavigate={setView} />
+        )}
         {view.type === 'tags' && (
           <Tags posts={posts} onNavigate={setView} />
         )}
         {view.type === 'reader' && (
-          <Reader postIndex={view.postIndex} posts={posts} onNavigate={setView} />
+          <Reader
+            postIndex={view.postIndex}
+            posts={view.posts.length > 0 ? view.posts : posts}
+            contextLabel={view.contextLabel}
+            onNavigate={setView}
+          />
         )}
       </div>
     </div>
