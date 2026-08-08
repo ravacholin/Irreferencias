@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Force text styles on Blogger HTML to make it brutalist and consistent */
+.poem-content * {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  line-height: inherit !important;
+  background-color: transparent !important;
+  text-align: left !important;
+}
+
+.poem-content p {
+  margin-bottom: 1.5em !important;
+}
+
+.poem-content a {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+.poem-content img {
+  max-width: 100%;
+  height: auto;
+  border: 4px solid black;
+  margin: 2em 0;
+}
