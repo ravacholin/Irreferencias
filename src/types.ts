@@ -7,8 +7,9 @@ export interface BloggerPost {
   link: string;
 }
 
-export type ViewState = 
+export type ViewState =
   | { type: 'home' }
   | { type: 'list', tag?: string }
-  | { type: 'reader', postIndex: number, posts: BloggerPost[] }
+  | { type: 'results', tag?: string, query?: string }
+  | { type: 'reader', postIndex: number, posts: BloggerPost[], contextLabel?: string }
   | { type: 'tags' };

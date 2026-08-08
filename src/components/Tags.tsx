@@ -76,7 +76,7 @@ export function Tags({ posts, onNavigate }: TagsProps) {
                 return (
                   <button
                     key={tag}
-                    onClick={() => onNavigate({ type: 'list', tag })}
+                    onClick={() => onNavigate({ type: 'results', tag })}
                     className={`group flex items-center uppercase transition-transform hover:-translate-y-1 ${opacityClass}`}
                   >
                     <span className={`
@@ -101,39 +101,15 @@ export function Tags({ posts, onNavigate }: TagsProps) {
         {searchTerm && filteredPosts.length > 0 && (
           <div>
             <h3 className="text-xl font-bold uppercase tracking-widest mb-6 border-b-4 border-black inline-block pb-1">Poemas ({filteredPosts.length})</h3>
-            <ul className="flex flex-col gap-0 border-[4px] border-black bg-white">
-              {filteredPosts.map((post) => {
-                const globalIndex = posts.findIndex(p => p.id === post.id);
-                const date = new Date(post.published);
-                const dateStr = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
-                return (
-                  <li key={post.id} className="border-b-[4px] border-black last:border-b-0">
-                    <button
-                      onClick={() => onNavigate({ type: 'reader', postIndex: globalIndex, posts })}
-                      className="w-full text-left p-6 md:p-8 hover:bg-black hover:text-white transition-colors duration-150 flex flex-col md:flex-row md:items-center justify-between group"
-                    >
-                      <div className="flex flex-col pr-4">
-                        <span className="font-mono text-[10px] md:text-xs mb-2 opacity-50 group-hover:opacity-100 tracking-widest">
-                          {dateStr}
-                        </span>
-                        <span className="text-2xl md:text-4xl font-bold tracking-tight uppercase leading-tight">
-                          {post.title}
-                        </span>
-                      </div>
-                      {post.tags.length > 0 && (
-                        <div className="hidden md:flex gap-2 mt-4 md:mt-0 opacity-50 group-hover:opacity-100">
-                          {post.tags.slice(0, 3).map(t => (
-                            <span key={t} className="border border-current px-2 py-1 text-[10px] font-bold uppercase">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <button
+              onClick={() => onNavigate({ type: 'results', query: searchTerm })}
+              className="w-full border-[4px] border-black bg-white p-6 md:p-8 text-left hover:bg-black hover:text-white transition-colors duration-150 flex items-center justify-between gap-4 group"
+            >
+              <span className="text-2xl md:text-4xl font-black uppercase tracking-tight leading-none">
+                Leer {filteredPosts.length} {filteredPosts.length === 1 ? 'poema' : 'poemas'}
+              </span>
+              <span className="font-mono text-lg md:text-2xl font-bold shrink-0 group-hover:translate-x-1 transition-transform">&rarr;</span>
+            </button>
           </div>
         )}
 

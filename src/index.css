@@ -25,3 +25,16 @@
   border: 4px solid black;
   margin: 2em 0;
 }
+
+/* Feed continuo de poemas: cada tarjeta rinde de forma perezosa
+   para mantener el scroll fluido aunque haya muchos poemas. */
+.poem-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* El lector permite arrastrar horizontalmente (swipe) para cambiar
+   de poema sin activar la selección de texto del navegador. */
+.reader-swipe {
+  touch-action: pan-y;
+}
