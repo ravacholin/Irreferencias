@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BloggerPost, ViewState } from '../types';
+import { PoemContent } from './PoemContent';
 
 interface ResultsProps {
   posts: BloggerPost[];
@@ -154,9 +155,11 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
                     {post.title}
                   </h2>
 
-                  <div
+                  <PoemContent
+                    content={post.content}
+                    tags={post.tags}
+                    onTagClick={toggleTag}
                     className="poem-content font-serif text-lg md:text-xl leading-relaxed md:leading-loose"
-                    dangerouslySetInnerHTML={{ __html: post.content }}
                   />
 
                   {post.tags.length > 0 && (
