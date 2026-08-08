@@ -111,11 +111,14 @@ body {
   filter: grayscale(0.15) brightness(0.92);
 }
 
-/* Feed de poemas: cada tarjeta rinde de forma perezosa para mantener
-   el scroll fluido aunque haya muchos poemas. */
+/* Feed de poemas. Antes usábamos `content-visibility: auto` para render
+   perezoso, pero en algunos navegadores (notablemente Safari en iOS) las
+   tarjetas fuera de pantalla quedaban en blanco: el contador del encabezado
+   decía "N poemas" mientras el cuerpo no se pintaba. Como el archivo es
+   acotado y los resultados filtrados suelen ser pocos, renderizamos siempre
+   para garantizar que los poemas se muestren. */
 .poem-card {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 640px;
+  contain: layout style;
 }
 
 /* El lector permite arrastrar horizontalmente (swipe) para cambiar
