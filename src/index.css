@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 /* ================================================================== */
-/*  FANZINE PUNK ROCK · XEROXED                                        */
-/*  Toner negro sobre papel fotocopiado. Blanco y negro, alto         */
-/*  contraste, bordes gruesos, grano de copia y collage armado a mano.*/
-/*  El brutalismo de la estructura se mantiene; el cuerpo del poema    */
-/*  queda impecablemente legible.                                      */
+/*  FANZINE PUNK ROCK · XEROXEADO HASTA LA RUINA                       */
+/*  Tóner reventado sobre papel fotocopiado veinte veces. Blanco y     */
+/*  negro, contraste al palo, bordes rotos, grano de copia, rayas de   */
+/*  arrastre del cristal, manchas, grapas, cinta y ransom-note.        */
+/*  El brutalismo grita; el cuerpo del poema queda impecablemente      */
+/*  legible. Toda la mugre vive en el chrome, nunca en el verso.       */
 /* ================================================================== */
 
 /* ------------------------------------------------------------------ */
@@ -44,14 +45,14 @@
 /*  bloques negros invertidos — el gesto punk por excelencia.         */
 /* ------------------------------------------------------------------ */
 @theme {
-  --color-ink: #f4f1e8;        /* papel fotocopiado — fondo         */
-  --color-ink-2: #eae5d8;      /* cards / superficies               */
-  --color-ink-3: #ddd7c6;      /* hover wells                       */
-  --color-bone: #0a0a0a;       /* toner negro — texto primario      */
-  --color-bone-dim: #33322f;   /* secundario / meta                 */
+  --color-ink: #efe9d8;        /* papel fotocopiado, un punto más sucio */
+  --color-ink-2: #e6dfca;      /* cards / superficies               */
+  --color-ink-3: #d8d0b8;      /* hover wells                       */
+  --color-bone: #080808;       /* toner negro — texto primario      */
+  --color-bone-dim: #2b2a27;   /* secundario / meta                 */
   --color-bone-faint: #6d6a61; /* terciario / deshabilitado         */
-  --color-hairline: rgba(10, 10, 10, 0.30); /* divisores            */
-  --color-rule: rgba(10, 10, 10, 0.62);     /* seams estructurales  */
+  --color-hairline: rgba(8, 8, 8, 0.32);  /* divisores             */
+  --color-rule: rgba(8, 8, 8, 0.66);      /* seams estructurales   */
 
   --font-display: "Anton", "Archivo Black", "Impact",
     "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow", sans-serif;
@@ -65,10 +66,10 @@
 }
 
 /* ------------------------------------------------------------------ */
-/*  Papel + grano de fotocopia.                                       */
-/*  Dos capas de ruido (feTurbulence) fijan el mottling del toner y   */
-/*  el polvillo de la copia. Un pseudo-elemento fijo suma grano       */
-/*  global en multiply para ensuciar parejo toda la superficie.       */
+/*  Papel + mugre de fotocopia.                                       */
+/*  Varias capas fijas: manchas de tóner disparejo, grano fino,       */
+/*  rayas verticales de arrastre del cristal del escáner, y una       */
+/*  viñeta sucia en los bordes (la sombra del libro contra el vidrio).*/
 /* ------------------------------------------------------------------ */
 html,
 body {
@@ -80,32 +81,68 @@ body {
 
 body {
   background-image:
+    /* viñeta sucia: bordes quemados por el escáner */
+    radial-gradient(
+      ellipse 120% 130% at 50% 50%,
+      transparent 55%,
+      rgba(8, 8, 8, 0.10) 88%,
+      rgba(8, 8, 8, 0.18) 100%
+    ),
+    /* rayas verticales de arrastre del tóner */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 6px,
+      rgba(8, 8, 8, 0.018) 6px,
+      rgba(8, 8, 8, 0.018) 7px,
+      transparent 7px,
+      transparent 19px
+    ),
     /* manchas suaves de tóner disparejo */
     radial-gradient(
-      circle at 18% 12%,
-      rgba(10, 10, 10, 0.05) 0%,
+      circle at 16% 10%,
+      rgba(8, 8, 8, 0.06) 0%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 84% 82%,
+      rgba(8, 8, 8, 0.055) 0%,
       transparent 38%
     ),
     radial-gradient(
-      circle at 82% 78%,
-      rgba(10, 10, 10, 0.045) 0%,
-      transparent 42%
+      circle at 62% 30%,
+      rgba(8, 8, 8, 0.035) 0%,
+      transparent 22%
     ),
     /* grano fino de fotocopia */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-  background-attachment: fixed, fixed, fixed;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  background-attachment: fixed;
 }
 
-/* Grano global de tóner por encima de todo, sin robar clicks. */
+/* Grano grueso de tóner por encima de todo, en multiply, sin robar clicks. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 9998;
   pointer-events: none;
   mix-blend-mode: multiply;
-  opacity: 0.6;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.85;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.09'/%3E%3C/svg%3E");
+}
+
+/* Motas y polvillo de la copia (specks blancos y negros) + rayas de escáner. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='sp'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16' numOctaves='1' seed='7'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -14 4.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23sp)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
 }
 
 ::selection {
@@ -119,12 +156,13 @@ body::before {
   scrollbar-color: var(--color-bone) transparent;
 }
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 *::-webkit-scrollbar-thumb {
   background: var(--color-bone);
   border-radius: 0;
+  border: 3px solid var(--color-ink);
 }
 *::-webkit-scrollbar-thumb:hover {
   background: var(--color-bone-dim);
@@ -145,43 +183,125 @@ body::before {
   box-shadow: 10px 10px 0 0 var(--color-bone);
 }
 
-/* Collage armado a mano: piezas apenas torcidas. */
+/* Collage armado a mano: piezas apenas torcidas. Más torcidas que antes. */
 .askew-1 {
-  transform: rotate(-1.4deg);
+  transform: rotate(-2.4deg);
 }
 .askew-2 {
-  transform: rotate(1.1deg);
+  transform: rotate(1.9deg);
 }
 .askew-3 {
-  transform: rotate(-0.6deg);
+  transform: rotate(-1.2deg);
+}
+.askew-4 {
+  transform: rotate(3.1deg);
 }
 
 /* Trama de medios tonos (halftone) para franjas y bloques. */
 .halftone {
   background-image: radial-gradient(
-    var(--color-bone) 1.4px,
-    transparent 1.6px
+    var(--color-bone) 1.5px,
+    transparent 1.7px
   );
   background-size: 7px 7px;
 }
 .halftone-dense {
   background-image: radial-gradient(
-    var(--color-bone) 1.1px,
-    transparent 1.3px
+    var(--color-bone) 1.2px,
+    transparent 1.4px
   );
   background-size: 5px 5px;
 }
 
-/* Titular con peso de stencil fotocopiado: ligero engrose + bleed. */
+/* Cinta de peligro / hazard tape diagonal — pura energía punk. */
+.hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-bone) 0,
+    var(--color-bone) 9px,
+    transparent 9px,
+    transparent 18px
+  );
+}
+
+/* Titular con peso de stencil fotocopiado: engrose sucio + bleed. */
 .ink-bleed {
-  text-shadow: 0.6px 0 0 currentColor, -0.6px 0 0 currentColor,
-    0 0.6px 0 currentColor;
+  text-shadow:
+    0.7px 0 0 currentColor,
+    -0.7px 0 0 currentColor,
+    0 0.7px 0 currentColor,
+    0 -0.5px 0 currentColor;
+}
+
+/* Doble impresión desalineada — el efecto ransom / mala registración. */
+.misprint {
+  position: relative;
+  text-shadow:
+    2px 2px 0 rgba(8, 8, 8, 0.28),
+    -1px 1px 0 rgba(8, 8, 8, 0.16);
+}
+
+/* Roughen fotocopiado: SVG filter (definido en index.html) que rompe los
+   bordes rectos de un titular grande hasta parecer escaneado y degradado. */
+.xerox-rough {
+  filter: url(#xeroxRough);
+}
+.xerox-crush {
+  filter: url(#xeroxCrush);
 }
 
 /* Bloque negro invertido: sello de tinta plena. */
 .stamp {
   background: var(--color-bone);
   color: var(--color-ink);
+}
+
+/* Sello con contorno grueso, tipo tampón entintado a mano. */
+.stamp-outline {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  border: 2px solid var(--color-bone);
+  box-shadow: inset 0 0 0 2px var(--color-ink), 3px 3px 0 0 var(--color-bone);
+}
+
+/* Marcador / resaltado tachado a mano bajo una palabra. */
+.marker {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(8, 8, 8, 0.85) 60%,
+    rgba(8, 8, 8, 0.85) 92%,
+    transparent 92%
+  );
+  color: var(--color-ink);
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Barra de censura — rectángulo negro pleno sobre texto. */
+.censor {
+  background: var(--color-bone);
+  color: var(--color-bone);
+}
+
+/* Grapa: dos patitas metálicas fotocopiadas en una esquina. */
+.staple {
+  position: relative;
+}
+.staple::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  width: 26px;
+  height: 9px;
+  border: 2px solid var(--color-bone);
+  border-bottom: none;
+  transform: rotate(-8deg);
+  box-shadow: 1px 1px 0 rgba(8, 8, 8, 0.25);
+  pointer-events: none;
+  z-index: 5;
 }
 
 /* Cinta adhesiva translúcida para "pegar" piezas de collage. */
@@ -191,15 +311,28 @@ body::before {
 .tape::after {
   content: "";
   position: absolute;
-  top: -10px;
+  top: -12px;
   left: 50%;
-  width: 74px;
-  height: 22px;
-  transform: translateX(-50%) rotate(-3deg);
-  background: rgba(10, 10, 10, 0.10);
-  border-left: 1px dashed rgba(10, 10, 10, 0.18);
-  border-right: 1px dashed rgba(10, 10, 10, 0.18);
+  width: 90px;
+  height: 26px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(8, 8, 8, 0.12);
+  border-left: 1px dashed rgba(8, 8, 8, 0.22);
+  border-right: 1px dashed rgba(8, 8, 8, 0.22);
   pointer-events: none;
+  z-index: 6;
+}
+.tape-2::after {
+  transform: translateX(-50%) rotate(5deg);
+  left: 30%;
+}
+
+/* Borde roto de fotocopia: border-image dibujado a mano temblorosa.
+   Reemplaza el borde recto por uno que tiembla como recorte de tijera. */
+.rough-border {
+  border-style: solid;
+  border-width: 3px;
+  border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M5 8 Q30 3 60 6 Q90 3 115 7 Q117 40 114 60 Q118 90 113 114 Q85 118 60 114 Q30 118 7 113 Q3 85 6 60 Q2 32 5 8 Z' fill='none' stroke='%23080808' stroke-width='5' stroke-linejoin='round'/%3E%3C/svg%3E") 10 repeat;
 }
 
 /* ------------------------------------------------------------------ */
@@ -256,14 +389,14 @@ body::before {
   outline: none;
 }
 
-/* Fotos xeroxeadas: gris duro, alto contraste, borde grueso. */
+/* Fotos xeroxeadas: umbral duro, alto contraste, borde grueso, misregistro. */
 .poem-content img {
   max-width: 100%;
   height: auto;
-  border: 2px solid var(--color-bone);
+  border: 3px solid var(--color-bone);
   margin: 2em 0;
-  filter: grayscale(1) contrast(1.45) brightness(0.98);
-  box-shadow: 5px 5px 0 0 var(--color-bone);
+  filter: grayscale(1) contrast(1.9) brightness(1.02);
+  box-shadow: 6px 6px 0 0 var(--color-bone);
 }
 
 /* Feed de poemas: render siempre (ver nota histórica sobre iOS). */
@@ -296,6 +429,19 @@ body::before {
   animation: drift-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Parpadeo de tubo fluorescente / fotocopiadora calentando. */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.4; }
+  94% { opacity: 1; }
+  96% { opacity: 0.7; }
+  97% { opacity: 1; }
+}
+.flicker {
+  animation: flicker 6s linear infinite;
+}
+
 /* Chrome que se retrae al leer y vuelve ante cualquier interacción. */
 .chrome {
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -307,7 +453,8 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drift-in {
+  .drift-in,
+  .flicker {
     animation: none;
   }
   .chrome {
