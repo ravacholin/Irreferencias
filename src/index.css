@@ -83,17 +83,16 @@ body {
 }
 
 /* Términos del poema que son hashtags del propio poema: clickeables para
-   saltar al listado filtrado por esa etiqueta. Subrayado punteado tenue para
-   distinguirlos de los enlaces reales (subrayado sólido) sin romper el ritmo
-   de lectura. */
+   saltar al listado filtrado por esa etiqueta. Se muestran como enlaces
+   subrayados claros en todo el poema, para que se distingan a simple vista. */
 .poem-content .poem-tag-link {
   cursor: pointer;
   color: inherit;
   text-decoration: underline;
-  text-decoration-style: dotted;
+  text-decoration-style: solid;
   text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--color-bone-faint);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-bone-dim);
   transition: text-decoration-color 0.2s ease, color 0.2s ease;
 }
 .poem-content .poem-tag-link:hover,
