@@ -21,15 +21,15 @@ export default defineConfig(() => {
           name: 'Irreferencias — Archivo de Poesía',
           short_name: 'Irreferencias',
           description:
-            'Lector minimalista y brutalista del archivo de poesía de irreferencias.blogspot.com.',
+            'Fanzine xeroxeado de poesía: el archivo de irreferencias.blogspot.com en blanco y negro.',
           lang: 'es',
           dir: 'ltr',
           start_url: '/',
           scope: '/',
           display: 'standalone',
           orientation: 'portrait',
-          background_color: '#0b0b0a',
-          theme_color: '#0b0b0a',
+          background_color: '#f4f1e8',
+          theme_color: '#f4f1e8',
           categories: ['books', 'education', 'lifestyle'],
           icons: [
             {

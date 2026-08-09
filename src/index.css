@@ -1,27 +1,75 @@
 @import "tailwindcss";
 
+/* ================================================================== */
+/*  FANZINE PUNK ROCK · XEROXED                                        */
+/*  Toner negro sobre papel fotocopiado. Blanco y negro, alto         */
+/*  contraste, bordes gruesos, grano de copia y collage armado a mano.*/
+/*  El brutalismo de la estructura se mantiene; el cuerpo del poema    */
+/*  queda impecablemente legible.                                      */
+/* ================================================================== */
+
 /* ------------------------------------------------------------------ */
-/*  Design tokens — monochrome warm-dark ("bone on ink").             */
-/*  Brutalism kept in the structure; warmth + calm from the palette.  */
+/*  Fuentes self-hosted (empaquetadas para funcionar offline en PWA). */
+/*  Anton — condensada negra (masthead / titulares).                  */
+/*  Archivo Black — bloque pesado (acentos ransom-note).              */
+/*  Special Elite — máquina de escribir (kickers, metadatos, mono).   */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/anton-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo Black";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/archivo-black-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Special Elite";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/special-elite-latin.woff2") format("woff2");
+}
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens — monocromo "toner sobre papel".                    */
+/*  Se conservan los NOMBRES de token del diseño anterior y se        */
+/*  invierten los VALORES: así el uso existente de bg-ink / text-bone  */
+/*  sigue válido y los hover:bg-bone hover:text-ink se vuelven         */
+/*  bloques negros invertidos — el gesto punk por excelencia.         */
 /* ------------------------------------------------------------------ */
 @theme {
-  --color-ink: #0b0b0a;        /* page background            */
-  --color-ink-2: #121210;      /* raised surfaces / cards    */
-  --color-ink-3: #1a1a17;      /* hover wells                */
-  --color-bone: #ece9e0;       /* primary text               */
-  --color-bone-dim: #9a968c;   /* secondary / mono meta      */
-  --color-bone-faint: #6b6860; /* tertiary / disabled        */
-  --color-hairline: rgba(236, 233, 224, 0.12); /* default divider   */
-  --color-rule: rgba(236, 233, 224, 0.24);     /* structural seams  */
+  --color-ink: #f4f1e8;        /* papel fotocopiado — fondo         */
+  --color-ink-2: #eae5d8;      /* cards / superficies               */
+  --color-ink-3: #ddd7c6;      /* hover wells                       */
+  --color-bone: #0a0a0a;       /* toner negro — texto primario      */
+  --color-bone-dim: #33322f;   /* secundario / meta                 */
+  --color-bone-faint: #6d6a61; /* terciario / deshabilitado         */
+  --color-hairline: rgba(10, 10, 10, 0.30); /* divisores            */
+  --color-rule: rgba(10, 10, 10, 0.62);     /* seams estructurales  */
 
+  --font-display: "Anton", "Archivo Black", "Impact",
+    "Haettenschweiler", "Franklin Gothic Bold", "Arial Narrow", sans-serif;
+  --font-block: "Archivo Black", "Impact", "Arial Black", sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
     Palatino, "Georgia", ui-serif, serif;
-  --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", "Menlo",
-    "Roboto Mono", monospace;
+  --font-mono: "Special Elite", ui-monospace, "SF Mono", "SFMono-Regular",
+    "Menlo", "Courier New", monospace;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Papel + grano de fotocopia.                                       */
+/*  Dos capas de ruido (feTurbulence) fijan el mottling del toner y   */
+/*  el polvillo de la copia. Un pseudo-elemento fijo suma grano       */
+/*  global en multiply para ensuciar parejo toda la superficie.       */
+/* ------------------------------------------------------------------ */
 html,
 body {
   background-color: var(--color-ink);
@@ -30,30 +78,133 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+body {
+  background-image:
+    /* manchas suaves de tóner disparejo */
+    radial-gradient(
+      circle at 18% 12%,
+      rgba(10, 10, 10, 0.05) 0%,
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 82% 78%,
+      rgba(10, 10, 10, 0.045) 0%,
+      transparent 42%
+    ),
+    /* grano fino de fotocopia */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  background-attachment: fixed, fixed, fixed;
+}
+
+/* Grano global de tóner por encima de todo, sin robar clicks. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
 ::selection {
   background: var(--color-bone);
   color: var(--color-ink);
 }
 
-/* Thin, quiet scrollbars that live in the dark shell. */
+/* Scrollbars duras, sin curvas: parte de la maquinaria. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-bone-faint) transparent;
+  scrollbar-color: var(--color-bone) transparent;
 }
 *::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: rgba(236, 233, 224, 0.14);
+  background: var(--color-bone);
   border-radius: 0;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(236, 233, 224, 0.26);
+  background: var(--color-bone-dim);
+}
+
+/* ================================================================== */
+/*  Utilidades fanzine reutilizables.                                  */
+/* ================================================================== */
+
+/* Sombra dura de recorte / sticker fotocopiado. */
+.shadow-xerox {
+  box-shadow: 6px 6px 0 0 var(--color-bone);
+}
+.shadow-xerox-sm {
+  box-shadow: 3px 3px 0 0 var(--color-bone);
+}
+.shadow-xerox-lg {
+  box-shadow: 10px 10px 0 0 var(--color-bone);
+}
+
+/* Collage armado a mano: piezas apenas torcidas. */
+.askew-1 {
+  transform: rotate(-1.4deg);
+}
+.askew-2 {
+  transform: rotate(1.1deg);
+}
+.askew-3 {
+  transform: rotate(-0.6deg);
+}
+
+/* Trama de medios tonos (halftone) para franjas y bloques. */
+.halftone {
+  background-image: radial-gradient(
+    var(--color-bone) 1.4px,
+    transparent 1.6px
+  );
+  background-size: 7px 7px;
+}
+.halftone-dense {
+  background-image: radial-gradient(
+    var(--color-bone) 1.1px,
+    transparent 1.3px
+  );
+  background-size: 5px 5px;
+}
+
+/* Titular con peso de stencil fotocopiado: ligero engrose + bleed. */
+.ink-bleed {
+  text-shadow: 0.6px 0 0 currentColor, -0.6px 0 0 currentColor,
+    0 0.6px 0 currentColor;
+}
+
+/* Bloque negro invertido: sello de tinta plena. */
+.stamp {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+/* Cinta adhesiva translúcida para "pegar" piezas de collage. */
+.tape {
+  position: relative;
+}
+.tape::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 74px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(10, 10, 10, 0.10);
+  border-left: 1px dashed rgba(10, 10, 10, 0.18);
+  border-right: 1px dashed rgba(10, 10, 10, 0.18);
+  pointer-events: none;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Poem body — force Blogger HTML into a calm serif reading rhythm.  */
+/*  Poema — HTML de Blogger domado a un ritmo de lectura sereno.       */
+/*  Se preserva la legibilidad: serif, sin trucos sobre el cuerpo.    */
 /* ------------------------------------------------------------------ */
 .poem-content {
   color: var(--color-bone);
@@ -73,62 +224,59 @@ body {
 
 .poem-content a {
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
-  text-decoration-color: var(--color-bone-dim);
-  transition: text-decoration-color 0.2s ease;
+  text-decoration-color: var(--color-bone);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .poem-content a:hover {
-  text-decoration-color: var(--color-bone);
+  background: var(--color-bone);
+  color: var(--color-ink) !important;
+  text-decoration-color: var(--color-ink);
 }
 
-/* Términos del poema que son hashtags del propio poema: clickeables para
-   saltar al listado filtrado por esa etiqueta. Subrayado punteado tenue para
-   distinguirlos de los enlaces reales (subrayado sólido) sin romper el ritmo
-   de lectura. */
+/* Términos del poema que son hashtags del propio poema: clickeables
+   para saltar al listado filtrado. Subrayado punteado tenue para
+   distinguirlos de los enlaces reales sin romper la lectura. */
 .poem-content .poem-tag-link {
   cursor: pointer;
   color: inherit;
   text-decoration: underline;
   text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 4px;
   text-decoration-color: var(--color-bone-faint);
-  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .poem-content .poem-tag-link:hover,
 .poem-content .poem-tag-link:focus-visible {
-  text-decoration-color: var(--color-bone);
-  color: var(--color-bone);
+  background: var(--color-bone);
+  color: var(--color-ink);
   outline: none;
 }
 
+/* Fotos xeroxeadas: gris duro, alto contraste, borde grueso. */
 .poem-content img {
   max-width: 100%;
   height: auto;
-  border: 1px solid var(--color-rule);
+  border: 2px solid var(--color-bone);
   margin: 2em 0;
-  filter: grayscale(0.15) brightness(0.92);
+  filter: grayscale(1) contrast(1.45) brightness(0.98);
+  box-shadow: 5px 5px 0 0 var(--color-bone);
 }
 
-/* Feed de poemas. Antes usábamos `content-visibility: auto` para render
-   perezoso, pero en algunos navegadores (notablemente Safari en iOS) las
-   tarjetas fuera de pantalla quedaban en blanco: el contador del encabezado
-   decía "N poemas" mientras el cuerpo no se pintaba. Como el archivo es
-   acotado y los resultados filtrados suelen ser pocos, renderizamos siempre
-   para garantizar que los poemas se muestren. */
+/* Feed de poemas: render siempre (ver nota histórica sobre iOS). */
 .poem-card {
   contain: layout style;
 }
 
-/* El lector permite arrastrar horizontalmente (swipe) para cambiar
-   de poema sin activar la selección de texto del navegador. */
+/* El lector permite swipe horizontal sin activar la selección. */
 .reader-swipe {
   touch-action: pan-y;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Drift — poems settle into view instead of snapping.              */
+/*  Movimiento — los poemas se asientan en lugar de aparecer de golpe. */
 /* ------------------------------------------------------------------ */
 @keyframes drift-in {
   from {
@@ -147,7 +295,7 @@ body {
   animation: drift-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Chrome that recedes while reading and returns on interaction. */
+/* Chrome que se retrae al leer y vuelve ante cualquier interacción. */
 .chrome {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
