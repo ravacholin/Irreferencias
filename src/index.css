@@ -256,6 +256,16 @@ body::after {
   color: var(--color-ink);
 }
 
+/* Fila que scrollea de costado (barra de salto del índice) sin mostrar
+   la barra de scroll: gesto limpio para móvil, se arrastra con el dedo. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Sello con contorno grueso, tipo tampón entintado a mano. */
 .stamp-outline {
   background: var(--color-ink);
