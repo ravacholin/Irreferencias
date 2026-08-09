@@ -21,6 +21,11 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
   // ante cualquier interacción: movimiento, toque o scroll hacia arriba.
   const [chromeHidden, setChromeHidden] = useState(false);
 
+  // Salto directo por número: al tocar el número de poema aparece un campo
+  // para escribir a cuál ir.
+  const [editingNumber, setEditingNumber] = useState(false);
+  const [numberDraft, setNumberDraft] = useState('');
+
   const canPrev = postIndex > 0;
   const canNext = postIndex < posts.length - 1;
 
@@ -41,6 +46,19 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
 
   const handleNext = () => {
     if (canNext) go(postIndex + 1);
+  };
+
+  const openNumberInput = () => {
+    setNumberDraft(String(postIndex + 1));
+    setEditingNumber(true);
+  };
+
+  const commitNumberJump = () => {
+    setEditingNumber(false);
+    const n = parseInt(numberDraft, 10);
+    if (Number.isNaN(n)) return;
+    const target = Math.min(Math.max(n, 1), posts.length) - 1;
+    if (target !== postIndex) go(target);
   };
 
   const handleRandom = () => {
@@ -126,8 +144,39 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
         </button>
 
         <div className="flex-1 flex items-center justify-center px-2 text-center min-w-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] truncate">
-            {postIndex + 1} / {posts.length}
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] truncate flex items-center justify-center gap-1">
+            {editingNumber ? (
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoFocus
+                value={numberDraft}
+                onChange={(e) => setNumberDraft(e.target.value.replace(/[^0-9]/g, ''))}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    commitNumberJump();
+                  } else if (e.key === 'Escape') {
+                    setEditingNumber(false);
+                  }
+                }}
+                onBlur={commitNumberJump}
+                aria-label={`Ir al poema por número (1 a ${posts.length})`}
+                className="w-12 bg-ink text-bone border-2 border-ink text-center font-mono text-[10px] tracking-[0.15em] outline-none px-1 py-0.5 tabular-nums"
+              />
+            ) : (
+              <button
+                onClick={openNumberInput}
+                title="Ir a un poema por número"
+                aria-label="Ir a un poema por número"
+                className="underline decoration-dotted underline-offset-2 tabular-nums hover:opacity-70 transition-opacity"
+              >
+                {postIndex + 1}
+              </button>
+            )}
+            {' / '}
+            {posts.length}
             {contextLabel ? <span className="opacity-60"> · {contextLabel}</span> : null}
           </span>
         </div>
