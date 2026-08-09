@@ -114,21 +114,21 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
       onTouchStart={poke}
     >
       <header
-        className={`chrome absolute top-0 inset-x-0 z-20 border-b border-rule flex justify-between bg-ink/90 backdrop-blur-sm ${
+        className={`chrome absolute top-0 inset-x-0 z-20 border-b-2 border-bone flex justify-between bg-bone text-ink ${
           chromeHidden ? 'chrome-hidden' : ''
         }`}
       >
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="px-4 py-4 md:px-6 border-r border-hairline hover:bg-bone hover:text-ink transition-colors font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hover:text-ink flex items-center"
+          className="px-4 py-4 md:px-6 border-r border-ink/30 hover:bg-ink hover:text-bone transition-colors font-mono text-[10px] uppercase tracking-[0.25em] flex items-center"
         >
           &larr; Inicio
         </button>
 
         <div className="flex-1 flex items-center justify-center px-2 text-center min-w-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim truncate">
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] truncate">
             {postIndex + 1} / {posts.length}
-            {contextLabel ? <span className="text-bone-faint"> · {contextLabel}</span> : null}
+            {contextLabel ? <span className="opacity-60"> · {contextLabel}</span> : null}
           </span>
         </div>
 
@@ -136,20 +136,20 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
           <button
             onClick={handlePrev}
             disabled={!canPrev}
-            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-bone-dim font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim"
+            className="px-4 py-4 md:px-6 border-l border-ink/30 hover:bg-ink hover:text-bone transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-ink font-mono text-[10px] uppercase tracking-[0.25em]"
           >
             &larr; Ant
           </button>
           <button
             onClick={handleRandom}
-            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hidden md:block"
+            className="px-4 py-4 md:px-6 border-l border-ink/30 hover:bg-ink hover:text-bone transition-colors font-mono text-[10px] uppercase tracking-[0.25em] hidden md:block"
           >
             Azar
           </button>
           <button
             onClick={handleNext}
             disabled={!canNext}
-            className="px-4 py-4 md:px-6 border-l border-hairline hover:bg-bone hover:text-ink transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-bone-dim font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim"
+            className="px-4 py-4 md:px-6 border-l border-ink/30 hover:bg-ink hover:text-bone transition-colors disabled:opacity-25 disabled:hover:bg-transparent disabled:hover:text-ink font-mono text-[10px] uppercase tracking-[0.25em]"
           >
             Sig &rarr;
           </button>
@@ -179,7 +179,7 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
             }}
             className="reader-swipe px-6 pt-28 pb-24 md:px-16 md:pt-32 md:pb-32 lg:px-24 flex flex-col items-center min-h-full"
           >
-            <div className="absolute top-24 left-6 font-mono text-[10px] tracking-[0.25em] text-bone-faint/60 uppercase hidden md:block pointer-events-none">
+            <div className="absolute top-24 left-6 stamp px-2 py-1 font-mono text-[10px] tracking-[0.25em] uppercase hidden md:block pointer-events-none askew-1">
               ID #{post.id.slice(-6)} · archivo
             </div>
 
@@ -196,12 +196,12 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
               />
 
               {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 pt-10 border-t border-hairline">
+                <div className="flex flex-wrap gap-2 pt-10 border-t-2 border-bone">
                   {post.tags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => onNavigate({ type: 'results', tag })}
-                      className="font-mono text-xs tracking-wide px-2 py-1 border border-hairline text-bone-dim hover:bg-bone hover:text-ink hover:border-bone transition-colors"
+                      className="font-mono text-xs tracking-wide px-2 py-1 border-2 border-bone text-bone-dim hover:bg-bone hover:text-ink transition-colors"
                     >
                       #{tag}
                     </button>

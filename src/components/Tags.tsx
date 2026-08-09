@@ -36,25 +36,25 @@ export function Tags({ posts, onNavigate }: TagsProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b border-rule px-6 py-8 md:px-12 md:py-10 shrink-0">
+      <header className="border-b-2 border-bone px-6 py-8 md:px-12 md:py-10 shrink-0">
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="mb-8 font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim hover:text-bone transition-colors"
+          className="mb-8 stamp px-3 py-1 border-2 border-bone font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone transition-colors"
         >
           &larr; Inicio
         </button>
-        <h2 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[0.9]">
+        <h2 className="ink-bleed font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
           Etiquetas
         </h2>
       </header>
 
-      <div className="border-b border-rule px-6 py-6 md:px-12 shrink-0">
+      <div className="border-b-2 border-bone px-6 py-6 md:px-12 shrink-0">
         <input
           type="text"
           placeholder="Buscar etiquetas o texto en poemas…"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border border-hairline bg-ink-2 px-4 py-3 text-sm text-bone placeholder:text-bone-faint outline-none focus:border-bone transition-colors"
+          className="w-full border-2 border-bone bg-ink px-4 py-3 font-mono text-sm text-bone placeholder:text-bone-faint outline-none focus:shadow-xerox-sm transition-shadow"
         />
       </div>
 
@@ -66,32 +66,37 @@ export function Tags({ posts, onNavigate }: TagsProps) {
                 Etiquetas · {filteredTags.length}
               </h3>
             )}
-            <div className="flex flex-wrap gap-x-6 gap-y-6 md:gap-x-8 items-baseline max-w-5xl mx-auto">
-              {filteredTags.map(([tag, count]) => {
+            <div className="flex flex-wrap gap-x-4 gap-y-5 md:gap-x-6 items-center max-w-5xl mx-auto">
+              {filteredTags.map(([tag, count], i) => {
                 const isLarge = !searchTerm && count > 5;
                 const isMedium = !searchTerm && count > 2 && count <= 5;
-                const dim = !searchTerm && count === 1;
+
+                // Ransom-note: piezas apenas torcidas y tipografías mezcladas.
+                const skew = ['askew-1', 'askew-2', 'askew-3', ''][i % 4];
+                const face = isLarge
+                  ? 'font-display uppercase'
+                  : isMedium
+                  ? (i % 2 ? 'font-block uppercase' : 'font-serif italic')
+                  : 'font-mono';
 
                 return (
                   <button
                     key={tag}
                     onClick={() => onNavigate({ type: 'results', tag })}
-                    className={`group inline-flex items-baseline gap-2 transition-colors hover:text-bone ${
-                      dim ? 'text-bone-faint' : 'text-bone-dim'
-                    }`}
+                    className={`group inline-flex items-center gap-2 border-2 border-bone px-3 py-1 bg-ink text-bone hover:bg-bone hover:text-ink transition-colors ${skew} hover:rotate-0 hover:shadow-xerox-sm`}
                   >
                     <span
-                      className={`tracking-tight ${
+                      className={`tracking-tight leading-none ${face} ${
                         isLarge
-                          ? 'text-4xl md:text-6xl font-semibold'
+                          ? 'text-4xl md:text-6xl'
                           : isMedium
-                          ? 'text-2xl md:text-3xl font-medium'
-                          : 'text-lg md:text-xl font-normal'
+                          ? 'text-2xl md:text-3xl'
+                          : 'text-base md:text-lg'
                       }`}
                     >
                       {tag}
                     </span>
-                    <span className="font-mono text-[10px] text-bone-faint group-hover:text-bone-dim transition-colors">
+                    <span className="stamp group-hover:bg-ink group-hover:text-bone font-mono text-[10px] px-1.5 py-0.5 leading-none self-start transition-colors">
                       {count}
                     </span>
                   </button>
@@ -108,7 +113,7 @@ export function Tags({ posts, onNavigate }: TagsProps) {
             </h3>
             <button
               onClick={() => onNavigate({ type: 'results', query: searchTerm })}
-              className="w-full border border-hairline bg-ink-2 px-6 py-6 md:px-10 md:py-8 text-left hover:bg-bone hover:text-ink transition-colors duration-200 flex items-center justify-between gap-4 group"
+              className="w-full border-2 border-bone bg-ink px-6 py-6 md:px-10 md:py-8 text-left hover:bg-bone hover:text-ink transition-colors duration-150 flex items-center justify-between gap-4 group shadow-xerox hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px]"
             >
               <span className="text-2xl md:text-3xl font-medium tracking-tight leading-none">
                 Leer {filteredPosts.length} {filteredPosts.length === 1 ? 'poema' : 'poemas'}
@@ -121,8 +126,10 @@ export function Tags({ posts, onNavigate }: TagsProps) {
         )}
 
         {searchTerm && filteredTags.length === 0 && filteredPosts.length === 0 && (
-          <div className="text-center mt-14 font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
-            No se encontraron resultados
+          <div className="flex justify-center mt-14">
+            <span className="stamp px-4 py-2 font-mono text-[10px] uppercase tracking-[0.3em] askew-1">
+              No se encontraron resultados
+            </span>
           </div>
         )}
       </div>

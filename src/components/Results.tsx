@@ -71,16 +71,16 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b border-rule shrink-0">
+      <header className="border-b-2 border-bone shrink-0">
         <div className="px-6 py-6 md:px-12 md:py-8 flex flex-col gap-5">
           <div className="flex items-center justify-between gap-4">
             <button
               onClick={() => onNavigate({ type: 'home' })}
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim hover:text-bone transition-colors"
+              className="stamp px-3 py-1 border-2 border-bone font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone transition-colors"
             >
               &larr; Inicio
             </button>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim border-2 border-bone px-3 py-1">
               {filteredPosts.length} {filteredPosts.length === 1 ? 'poema' : 'poemas'}
             </span>
           </div>
@@ -93,7 +93,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
               setSearchTerm(e.target.value);
               if (scrollRef.current) scrollRef.current.scrollTo(0, 0);
             }}
-            className="w-full border border-hairline bg-ink-2 px-4 py-3 text-sm text-bone placeholder:text-bone-faint outline-none focus:border-bone transition-colors"
+            className="w-full border-2 border-bone bg-ink px-4 py-3 font-mono text-sm text-bone placeholder:text-bone-faint outline-none focus:shadow-xerox-sm transition-shadow"
           />
 
           {selectedTags.length > 0 && (
@@ -102,7 +102,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
                 <button
                   key={t}
                   onClick={() => toggleTag(t)}
-                  className="group flex items-center gap-2 bg-bone text-ink px-3 py-1 font-mono text-xs tracking-wide hover:bg-transparent hover:text-bone border border-bone transition-colors"
+                  className="group flex items-center gap-2 bg-bone text-ink px-3 py-1 font-mono text-xs tracking-wide hover:bg-ink hover:text-bone border-2 border-bone shadow-xerox-sm transition-colors"
                   title="Quitar filtro"
                 >
                   #{t}
@@ -111,7 +111,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
               ))}
               <button
                 onClick={() => onNavigate({ type: 'tags' })}
-                className="border border-dashed border-bone-faint px-3 py-1 font-mono text-xs tracking-wide text-bone-dim hover:text-bone hover:border-bone transition-colors"
+                className="border-2 border-dashed border-bone px-3 py-1 font-mono text-xs tracking-wide text-bone-dim hover:bg-bone hover:text-ink transition-colors"
               >
                 Todas las etiquetas
               </button>
@@ -123,12 +123,12 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         {filteredPosts.length === 0 ? (
           <div className="h-full flex items-center justify-center p-8">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
+            <p className="stamp px-4 py-2 font-mono text-[10px] uppercase tracking-[0.3em] askew-1">
               No se encontraron poemas
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-hairline">
+          <div className="divide-y-2 divide-bone">
             {filteredPosts.map((post, index) => (
               <article
                 key={post.id}
@@ -136,12 +136,12 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
               >
                 <div className="w-full max-w-[38rem]">
                   <div className="flex items-baseline justify-between gap-4 mb-6">
-                    <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint">
+                    <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint border-2 border-bone px-2 py-1">
                       {formatDate(post.published)}
                     </span>
                     <button
                       onClick={() => openReader(index)}
-                      className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone-dim hover:text-bone transition-colors shrink-0"
+                      className="stamp px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] hover:bg-ink hover:text-bone border-2 border-bone transition-colors shrink-0"
                       title="Abrir en el lector"
                     >
                       Leer &rarr;
@@ -163,15 +163,15 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
                   />
 
                   {post.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-hairline">
+                    <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t-2 border-bone">
                       {post.tags.map((t) => (
                         <button
                           key={t}
                           onClick={() => toggleTag(t)}
-                          className={`font-mono text-xs tracking-wide px-2 py-1 border transition-colors ${
+                          className={`font-mono text-xs tracking-wide px-2 py-1 border-2 border-bone transition-colors ${
                             selectedTags.includes(t)
-                              ? 'bg-bone text-ink border-bone'
-                              : 'text-bone-dim border-hairline hover:text-bone hover:border-bone-dim'
+                              ? 'bg-bone text-ink shadow-xerox-sm'
+                              : 'text-bone-dim hover:bg-bone hover:text-ink'
                           }`}
                         >
                           #{t}

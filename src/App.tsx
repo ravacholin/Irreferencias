@@ -19,8 +19,8 @@ export default function App() {
   if (loading) {
     return (
       <div className="min-h-screen bg-ink text-bone flex items-center justify-center p-8">
-        <span className="font-mono text-xs uppercase tracking-[0.35em] text-bone-dim animate-pulse">
-          Cargando el archivo
+        <span className="stamp px-5 py-2 font-mono text-xs uppercase tracking-[0.35em] animate-pulse askew-1">
+          Cargando el archivo…
         </span>
       </div>
     );
@@ -29,11 +29,11 @@ export default function App() {
   if (error) {
     return (
       <div className="min-h-screen bg-ink text-bone flex items-center justify-center p-8">
-        <div className="max-w-md text-center border border-rule p-10">
-          <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-bone-dim">
+        <div className="max-w-md text-center border-2 border-bone bg-ink p-10 shadow-xerox askew-2">
+          <span className="stamp inline-block px-4 py-1 font-mono text-[10px] uppercase tracking-[0.35em]">
             Error
           </span>
-          <p className="mt-4 font-mono text-base text-bone">{error}</p>
+          <p className="mt-6 font-mono text-base text-bone">{error}</p>
         </div>
       </div>
     );
@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <div className="font-sans antialiased h-screen p-0 md:p-6 bg-ink">
-      <div className="border-0 md:border border-rule bg-ink h-full flex flex-col overflow-hidden">
+      <div className="border-0 md:border-2 border-bone bg-ink h-full flex flex-col overflow-hidden md:shadow-xerox-lg">
         {view.type === 'home' && (
           <Home onNavigate={setView} posts={posts} />
         )}

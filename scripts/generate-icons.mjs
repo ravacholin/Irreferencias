@@ -1,6 +1,7 @@
 /**
- * Genera los iconos de la PWA con estética brutalista (negro/blanco).
- * Ejecutar con: node scripts/generate-icons.mjs
+ * Genera los iconos de la PWA con estética fanzine xeroxeado (blanco y negro).
+ * Papel claro con marca "I" negra en stencil y marco grueso, como un sello
+ * fotocopiado. Ejecutar con: node scripts/generate-icons.mjs
  */
 import sharp from 'sharp';
 import { fileURLToPath } from 'url';
@@ -9,7 +10,22 @@ import path from 'path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(__dirname, '..', 'public');
 
-// Icono estándar: marco blanco grueso sobre fondo negro con una "I" central.
+const PAPER = '#f4f1e8';
+const INK = '#0a0a0a';
+
+// Franja de medios tonos (halftone) para el borde superior: aire de fotocopia.
+const halftone = (size) => {
+  const r = Math.max(2, Math.round(size * 0.012));
+  const gap = r * 3.4;
+  const rowY = Math.round(size * 0.12);
+  let dots = '';
+  for (let x = gap; x < size - gap / 2; x += gap) {
+    dots += `<circle cx="${x.toFixed(1)}" cy="${rowY}" r="${r}" fill="${INK}"/>`;
+  }
+  return dots;
+};
+
+// Icono estándar: papel con marco negro grueso y una "I" central de tóner.
 const standardSvg = (size) => {
   const stroke = Math.round(size * 0.06);
   const inset = Math.round(size * 0.1);
@@ -21,15 +37,15 @@ const standardSvg = (size) => {
   const topY = Math.round(size * 0.24);
   const bottomY = size - topY - serifH;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <rect width="${size}" height="${size}" fill="#000000"/>
-  <rect x="${inset}" y="${inset}" width="${size - inset * 2}" height="${size - inset * 2}" fill="none" stroke="#ffffff" stroke-width="${stroke}"/>
-  <rect x="${serifX}" y="${topY}" width="${serifW}" height="${serifH}" fill="#ffffff"/>
-  <rect x="${barX}" y="${topY}" width="${barW}" height="${bottomY - topY + serifH}" fill="#ffffff"/>
-  <rect x="${serifX}" y="${bottomY}" width="${serifW}" height="${serifH}" fill="#ffffff"/>
+  <rect width="${size}" height="${size}" fill="${PAPER}"/>
+  <rect x="${inset}" y="${inset}" width="${size - inset * 2}" height="${size - inset * 2}" fill="none" stroke="${INK}" stroke-width="${stroke}"/>
+  <rect x="${serifX}" y="${topY}" width="${serifW}" height="${serifH}" fill="${INK}"/>
+  <rect x="${barX}" y="${topY}" width="${barW}" height="${bottomY - topY + serifH}" fill="${INK}"/>
+  <rect x="${serifX}" y="${bottomY}" width="${serifW}" height="${serifH}" fill="${INK}"/>
 </svg>`;
 };
 
-// Icono maskable: fondo negro a sangre completa, "I" dentro de la zona segura (80%).
+// Icono maskable: papel a sangre completa, "I" negra dentro de la zona segura.
 const maskableSvg = (size) => {
   const barW = Math.round(size * 0.12);
   const barX = (size - barW) / 2;
@@ -39,10 +55,11 @@ const maskableSvg = (size) => {
   const topY = Math.round(size * 0.3);
   const bottomY = size - topY - serifH;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <rect width="${size}" height="${size}" fill="#000000"/>
-  <rect x="${serifX}" y="${topY}" width="${serifW}" height="${serifH}" fill="#ffffff"/>
-  <rect x="${barX}" y="${topY}" width="${barW}" height="${bottomY - topY + serifH}" fill="#ffffff"/>
-  <rect x="${serifX}" y="${bottomY}" width="${serifW}" height="${serifH}" fill="#ffffff"/>
+  <rect width="${size}" height="${size}" fill="${PAPER}"/>
+  ${halftone(size)}
+  <rect x="${serifX}" y="${topY}" width="${serifW}" height="${serifH}" fill="${INK}"/>
+  <rect x="${barX}" y="${topY}" width="${barW}" height="${bottomY - topY + serifH}" fill="${INK}"/>
+  <rect x="${serifX}" y="${bottomY}" width="${serifW}" height="${serifH}" fill="${INK}"/>
 </svg>`;
 };
 

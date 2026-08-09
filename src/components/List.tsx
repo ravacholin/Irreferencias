@@ -42,35 +42,35 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b border-rule px-6 py-8 md:px-12 md:py-10 shrink-0">
+      <header className="border-b-2 border-bone px-6 py-8 md:px-12 md:py-10 shrink-0">
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="mb-8 font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim hover:text-bone transition-colors"
+          className="mb-8 stamp px-3 py-1 font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone border-2 border-bone transition-colors"
         >
           &larr; Inicio
         </button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <h2 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[0.9]">
+          <h2 className="ink-bleed font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
             Índice
           </h2>
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim self-start md:self-auto">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim self-start md:self-auto border-2 border-bone px-3 py-1">
             {filteredPosts.length} resultados
           </span>
         </div>
       </header>
 
-      <div className="border-b border-rule px-6 py-6 md:px-12 flex flex-col gap-6 shrink-0">
+      <div className="border-b-2 border-bone px-6 py-6 md:px-12 flex flex-col gap-6 shrink-0">
         <div className="flex flex-col md:flex-row gap-3">
           <input
             type="text"
             placeholder="Buscar por título…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 border border-hairline bg-ink-2 px-4 py-3 text-sm text-bone placeholder:text-bone-faint outline-none focus:border-bone transition-colors"
+            className="flex-1 border-2 border-bone bg-ink px-4 py-3 font-mono text-sm text-bone placeholder:text-bone-faint outline-none focus:shadow-xerox-sm transition-shadow"
           />
           <button
             onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
-            className="border border-hairline bg-ink-2 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-bone-dim hover:text-bone hover:border-bone transition-colors whitespace-nowrap"
+            className="border-2 border-bone bg-ink px-4 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-bone hover:bg-bone hover:text-ink transition-colors whitespace-nowrap"
           >
             Fecha · {sortOrder === 'desc' ? 'Más recientes' : 'Más antiguos'}
           </button>
@@ -81,16 +81,16 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
             Filtrar por etiquetas
           </span>
           <div className="flex flex-wrap gap-2">
-            {allTags.map(t => {
+            {allTags.map((t) => {
               const isSelected = selectedTags.includes(t);
               return (
                 <button
                   key={t}
                   onClick={() => toggleTag(t)}
-                  className={`px-3 py-1 text-xs font-mono tracking-wide transition-colors border ${
+                  className={`px-3 py-1 text-xs font-mono tracking-wide border-2 border-bone transition-colors ${
                     isSelected
-                      ? 'bg-bone text-ink border-bone'
-                      : 'bg-transparent text-bone-dim border-hairline hover:text-bone hover:border-bone-dim'
+                      ? 'bg-bone text-ink shadow-xerox-sm'
+                      : 'bg-ink text-bone-dim hover:bg-bone hover:text-ink'
                   }`}
                 >
                   #{t}
@@ -100,9 +100,9 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
             {selectedTags.length > 0 && (
               <button
                 onClick={() => setSelectedTags([])}
-                className="px-3 py-1 text-xs font-mono tracking-wide border border-dashed border-bone-faint text-bone-dim hover:text-bone hover:border-bone transition-colors"
+                className="px-3 py-1 text-xs font-mono tracking-wide border-2 border-dashed border-bone text-bone-dim hover:bg-bone hover:text-ink transition-colors"
               >
-                Limpiar
+                Limpiar ✕
               </button>
             )}
           </div>
@@ -110,25 +110,30 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <ul className="divide-y divide-hairline">
+        <ul className="divide-y-2 divide-bone">
           {filteredPosts.map((post, index) => {
             const date = new Date(post.published);
             const dateStr = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
             return (
               <li
                 key={post.id}
-                className="group hover:bg-ink-2 transition-colors duration-200"
+                className="group hover:bg-bone hover:text-ink transition-colors duration-150"
               >
                 <div className="px-6 py-6 md:px-12 md:py-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <button
                     onClick={() => onNavigate({ type: 'reader', postIndex: index, posts: filteredPosts })}
-                    className="text-left flex flex-col gap-2 pr-4 flex-1 min-w-0"
+                    className="text-left flex items-baseline gap-4 pr-4 flex-1 min-w-0"
                   >
-                    <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint group-hover:text-bone-dim transition-colors">
-                      {dateStr}
+                    <span className="font-block text-lg md:text-xl text-bone-faint group-hover:text-ink/70 transition-colors shrink-0 tabular-nums">
+                      {(index + 1).toString().padStart(2, '0')}
                     </span>
-                    <span className="text-2xl md:text-3xl font-medium tracking-tight leading-tight text-bone">
-                      {post.title}
+                    <span className="flex flex-col gap-1.5 min-w-0">
+                      <span className="font-mono text-[10px] tracking-[0.25em] text-bone-faint group-hover:text-ink/60 transition-colors">
+                        {dateStr}
+                      </span>
+                      <span className="font-serif text-2xl md:text-3xl italic tracking-tight leading-tight">
+                        {post.title}
+                      </span>
                     </span>
                   </button>
                   {post.tags.length > 0 && (
@@ -137,7 +142,7 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
                         <button
                           key={t}
                           onClick={() => onNavigate({ type: 'results', tag: t })}
-                          className="border border-hairline px-2 py-1 font-mono text-[10px] text-bone-dim hover:text-ink hover:bg-bone hover:border-bone transition-colors"
+                          className="border-2 border-bone px-2 py-1 font-mono text-[10px] text-bone-dim group-hover:border-ink group-hover:text-ink hover:!bg-bone hover:!text-ink transition-colors"
                           title={`Ver poemas de #${t}`}
                         >
                           #{t}
