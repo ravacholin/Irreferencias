@@ -235,17 +235,18 @@ body::before {
   text-decoration-color: var(--color-ink);
 }
 
-/* Términos del poema que son hashtags del propio poema: clickeables
-   para saltar al listado filtrado. Subrayado punteado tenue para
-   distinguirlos de los enlaces reales sin romper la lectura. */
+/* Términos del poema que son hashtags del propio poema: clickeables para
+   saltar al listado filtrado por esa etiqueta. Se muestran como enlaces
+   subrayados claros en todo el poema, para que se distingan a simple vista.
+   En clave fanzine: subrayado sólido de tóner y hover como bloque invertido. */
 .poem-content .poem-tag-link {
   cursor: pointer;
   color: inherit;
   text-decoration: underline;
-  text-decoration-style: dotted;
+  text-decoration-style: solid;
   text-decoration-thickness: 1.5px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--color-bone-faint);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-bone);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 .poem-content .poem-tag-link:hover,
