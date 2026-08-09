@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <div className="font-sans antialiased h-screen p-0 md:p-6 bg-ink">
-      <div className="border-0 md:border-2 border-bone bg-ink h-full flex flex-col overflow-hidden md:shadow-xerox-lg">
+      <div className="border-0 md:border-[3px] border-bone bg-ink h-full flex flex-col overflow-hidden md:shadow-xerox-lg">
         {view.type === 'home' && (
           <Home onNavigate={setView} posts={posts} />
         )}

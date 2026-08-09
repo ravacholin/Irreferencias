@@ -42,15 +42,16 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b-2 border-bone px-6 py-8 md:px-12 md:py-10 shrink-0">
+      <header className="relative border-b-[3px] border-bone px-6 py-8 md:px-12 md:py-10 shrink-0 overflow-hidden">
+        <div className="hazard absolute inset-x-0 top-0 h-2 opacity-70" aria-hidden="true" />
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="mb-8 stamp px-3 py-1 font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone border-2 border-bone transition-colors"
+          className="mt-2 mb-8 stamp px-3 py-1 font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone border-2 border-bone transition-colors askew-1"
         >
           &larr; Inicio
         </button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <h2 className="ink-bleed font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
+          <h2 className="ink-bleed misprint xerox-rough font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
             Índice
           </h2>
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-dim self-start md:self-auto border-2 border-bone px-3 py-1">
@@ -59,7 +60,7 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
         </div>
       </header>
 
-      <div className="border-b-2 border-bone px-6 py-6 md:px-12 flex flex-col gap-6 shrink-0">
+      <div className="border-b-[3px] border-bone px-6 py-6 md:px-12 flex flex-col gap-6 shrink-0">
         <div className="flex flex-col md:flex-row gap-3">
           <input
             type="text"
@@ -110,7 +111,7 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <ul className="divide-y-2 divide-bone">
+        <ul className="divide-y-[3px] divide-bone">
           {filteredPosts.map((post, index) => {
             const date = new Date(post.published);
             const dateStr = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;

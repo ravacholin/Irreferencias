@@ -17,6 +17,26 @@
     <meta name="apple-mobile-web-app-title" content="Irreferencias" />
   </head>
   <body>
+    <!-- Filtros SVG de degradación xerox: rompen bordes rectos y "revientan"
+         el tóner de los titulares grandes hasta parecer fotocopiados. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="xeroxRough">
+          <feTurbulence type="fractalNoise" baseFrequency="0.014 0.02" numOctaves="2" seed="4" result="warp" />
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="xeroxCrush">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" result="grain" />
+          <feColorMatrix in="grain" type="saturate" values="0" result="mono" />
+          <feComponentTransfer in="mono" result="specks">
+            <feFuncA type="discrete" tableValues="0 0 0 0 0 0 0 0 1" />
+          </feComponentTransfer>
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="2" result="warp" />
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="4" xChannelSelector="R" yChannelSelector="G" result="warped" />
+          <feComposite in="warped" in2="specks" operator="out" />
+        </filter>
+      </defs>
+    </svg>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -36,19 +36,20 @@ export function Tags({ posts, onNavigate }: TagsProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b-2 border-bone px-6 py-8 md:px-12 md:py-10 shrink-0">
+      <header className="relative border-b-[3px] border-bone px-6 py-8 md:px-12 md:py-10 shrink-0 overflow-hidden">
+        <div className="hazard absolute inset-x-0 top-0 h-2 opacity-70" aria-hidden="true" />
         <button
           onClick={() => onNavigate({ type: 'home' })}
-          className="mb-8 stamp px-3 py-1 border-2 border-bone font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone transition-colors"
+          className="mt-2 mb-8 stamp px-3 py-1 border-2 border-bone font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-ink hover:text-bone transition-colors askew-1"
         >
           &larr; Inicio
         </button>
-        <h2 className="ink-bleed font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
+        <h2 className="ink-bleed misprint xerox-rough font-display text-6xl md:text-8xl uppercase tracking-tight leading-[0.82]">
           Etiquetas
         </h2>
       </header>
 
-      <div className="border-b-2 border-bone px-6 py-6 md:px-12 shrink-0">
+      <div className="border-b-[3px] border-bone px-6 py-6 md:px-12 shrink-0">
         <input
           type="text"
           placeholder="Buscar etiquetas o texto en poemas…"

@@ -114,7 +114,7 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
       onTouchStart={poke}
     >
       <header
-        className={`chrome absolute top-0 inset-x-0 z-20 border-b-2 border-bone flex justify-between bg-bone text-ink ${
+        className={`chrome absolute top-0 inset-x-0 z-20 border-b-[3px] border-bone flex justify-between bg-bone text-ink ${
           chromeHidden ? 'chrome-hidden' : ''
         }`}
       >
@@ -179,11 +179,12 @@ export function Reader({ postIndex, posts, onNavigate, contextLabel }: ReaderPro
             }}
             className="reader-swipe px-6 pt-28 pb-24 md:px-16 md:pt-32 md:pb-32 lg:px-24 flex flex-col items-center min-h-full"
           >
-            <div className="absolute top-24 left-6 stamp px-2 py-1 font-mono text-[10px] tracking-[0.25em] uppercase hidden md:block pointer-events-none askew-1">
+            <div className="absolute top-24 left-6 stamp px-2 py-1 font-mono text-[10px] tracking-[0.25em] uppercase hidden md:block pointer-events-none askew-1 border-2 border-bone">
               ID #{post.id.slice(-6)} · archivo
             </div>
 
             <article className="w-full max-w-[38rem]">
+              <div className="hazard h-1.5 w-24 mb-6 opacity-80" aria-hidden="true" />
               <h1 className="font-serif text-4xl md:text-6xl italic tracking-tight mb-12 leading-[1.05] text-bone">
                 {post.title}
               </h1>

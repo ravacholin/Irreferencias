@@ -71,8 +71,9 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
 
   return (
     <div className="flex flex-col h-full bg-ink text-bone">
-      <header className="border-b-2 border-bone shrink-0">
-        <div className="px-6 py-6 md:px-12 md:py-8 flex flex-col gap-5">
+      <header className="relative border-b-[3px] border-bone shrink-0 overflow-hidden">
+        <div className="hazard absolute inset-x-0 top-0 h-2 opacity-70" aria-hidden="true" />
+        <div className="px-6 pt-8 pb-6 md:px-12 md:pt-10 md:pb-8 flex flex-col gap-5">
           <div className="flex items-center justify-between gap-4">
             <button
               onClick={() => onNavigate({ type: 'home' })}
@@ -128,7 +129,7 @@ export function Results({ posts, tag, query, onNavigate }: ResultsProps) {
             </p>
           </div>
         ) : (
-          <div className="divide-y-2 divide-bone">
+          <div className="divide-y-[3px] divide-bone">
             {filteredPosts.map((post, index) => (
               <article
                 key={post.id}
