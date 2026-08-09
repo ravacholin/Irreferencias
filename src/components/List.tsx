@@ -80,7 +80,7 @@ export function List({ posts, tag: initialTag, onNavigate }: ListProps) {
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-faint">
             Filtrar por etiquetas
           </span>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-h-32 md:max-h-40 overflow-y-auto pr-1">
             {allTags.map((t) => {
               const isSelected = selectedTags.includes(t);
               return (
